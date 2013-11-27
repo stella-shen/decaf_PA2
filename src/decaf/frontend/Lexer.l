@@ -53,10 +53,12 @@ WHITESPACE			= ([ \t]+)
 {S_COMMENT}			{ /* Just ignore */    }
 {M_COMMENT}			{ /* Just ignore */	   }
 
+
 	// 识别关键字的规则 
 "void"				{ return keyword(Parser.VOID);			}
 "int"				{ return keyword(Parser.INT);			}
 "bool"				{ return keyword(Parser.BOOL);			}
+"double"			{ return keyword(Parser.DOUBLE);		}
 "string"			{ return keyword(Parser.STRING);		}
 "new"				{ return keyword(Parser.NEW);			}
 "null"				{ return keyword(Parser.NULL);			}
@@ -73,7 +75,8 @@ WHITESPACE			= ([ \t]+)
 "ReadInteger"		{ return keyword(Parser.READ_INTEGER);	}
 "ReadLine"			{ return keyword(Parser.READ_LINE);		}
 "static"			{ return keyword(Parser.STATIC);		}
-"instanceof"		{ return keyword(Parser.INSTANCEOF);	}
+"repeat"			{ return keyword(Parser.REPEAT);		}
+"until"				{ return keyword(Parser.UNTIL);			}
 
 	// 识别操作符的规则
 "<="				{ return operator(Parser.LESS_EQUAL);	}
@@ -84,10 +87,12 @@ WHITESPACE			= ([ \t]+)
 "||"				{ return operator(Parser.OR);			}
 {SIMPLE_OPERATOR}	{ return operator((int)yycharat(0));	}
 
+
 	// 识别常数的规则
-"true"				{ return boolConst(true);										}
-"false"				{ return boolConst(false);										}
+"true"				{ return boolConst(true);				}
+"false"				{ return boolConst(false);				}
 {INTEGER}			{ return intConst(yytext());			}
+{DOUBLE}			{ return doubleConst(yytext());			}
 <YYINITIAL>\"		{ sloc = getLocation();		  
 					  yybegin(S);
 					  buffer = new StringBuilder();								    }

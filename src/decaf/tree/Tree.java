@@ -87,11 +87,16 @@ public abstract class Tree {
      * While-loops, of type WhileLoop.
      */
     public static final int WHILELOOP = DOLOOP + 1;
+    
+    /**
+     * While-loops, of type RepeatLoop.
+     */
+    public static final int REPEATLOOP = DOLOOP + 1;
 
     /**
      * For-loops, of type ForLoop.
      */
-    public static final int FORLOOP = WHILELOOP + 1;
+    public static final int FORLOOP = REPEATLOOP + 1;
 
     /**
      * Labelled statements, of type Labelled.
@@ -302,6 +307,7 @@ public abstract class Tree {
     public static final int INT = VOID + 1; 
     public static final int BOOL = INT + 1; 
     public static final int STRING = BOOL + 1; 
+    public static final int DOUBLE = STRING + 1;
 
 
     public Location loc;
@@ -541,6 +547,39 @@ public abstract class Tree {
     		pw.decIndent();
     	}
    }
+    
+    /**
+     * A repeat loop
+     */
+    public static class RepeatLoop extends Tree {
+    	public Expr condition;
+    	public Tree loopBody;
+    	
+    	public RepeatLoop(Expr condition, Tree loopBody, Location loc) {
+    		super(REPEATLOOP, loc);
+    		this.condition = condition;
+    		this.loopBody = loopBody;
+    	}
+    	
+    	@Override
+    	public void accept(Visitor v) {
+    		v.visitRepeatLoop(this);
+    	}
+    	
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("repeat");
+    		pw.incIndent();
+    		if(loopBody != null) {
+    			loopBody.printTo(pw);
+    		}
+    		pw.decIndent();
+    		pw.println("until");
+    		pw.incIndent();
+    		condition.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
 
     /**
       * A for loop.
@@ -1228,6 +1267,9 @@ public abstract class Tree {
     		case BOOL:
     			pw.println("boolconst " + value);
     			break;
+    		case DOUBLE:
+    			pw.println("doubleconst " + value);
+    			break;
     		default:
     			pw.println("stringconst " + MiscUtils.quote((String)value));
     		}
@@ -1289,6 +1331,9 @@ public abstract class Tree {
     			break;
     		case VOID:
     			pw.print("voidtype");
+    			break;
+    		case DOUBLE:
+    			pw.print("doubletype");
     			break;
     		default:
     			pw.print("stringtype");
@@ -1375,6 +1420,10 @@ public abstract class Tree {
 
         public void visitWhileLoop(WhileLoop that) {
             visitTree(that);
+        }
+        
+        public void visitRepeatLoop(RepeatLoop that) {
+        	visitTree(that);
         }
 
         public void visitForLoop(ForLoop that) {
