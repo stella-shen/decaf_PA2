@@ -1,0 +1,1 @@
+*** Error at (8,9): can not reference a non-static field 'func' from static method 'main'
