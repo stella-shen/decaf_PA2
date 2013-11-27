@@ -36,9 +36,11 @@ HEX_DIGIT 			= ([0-9A-Fa-f])
 HEX_INTEGER			= (0[Xx]{HEX_DIGIT}+)
 DEC_INTEGER			= ({DIGIT}+)
 INTEGER				= ({HEX_INTEGER}|{DEC_INTEGER})
+DOUBLE              = ([\+-]?[0-9]+\.[0-9]*([Ee][\+-]?[0-9]+)?)
 IDENTIFIER			= ([A-Za-z][_0-9A-Za-z]*)
 SIMPLE_OPERATOR		= ("+"|"-"|"*"|"/"|"%"|"="|"<"|">"|"."|","|";"|"!"|"("|")"|"["|"]"|"{"|"}")
 S_COMMENT			= ("//"[^\r\n]*{NEWLINE})
+M_COMMENT           = ("/*"(.*|{NEWLINE}*)*"*/")
 WHITESPACE			= ([ \t]+)
 
 	// 开始条件S表示字符串
