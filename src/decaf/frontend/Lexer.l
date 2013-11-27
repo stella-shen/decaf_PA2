@@ -51,7 +51,7 @@ WHITESPACE			= ([ \t]+)
 {WHITESPACE}		{ /* Just ignore */    }
 {NEWLINE}			{ /* Just ignore */    }
 {S_COMMENT}			{ /* Just ignore */    }
-
+{M_COMMENT}			{ /* Just ignore */	   }
 
 	// 识别关键字的规则 
 "void"				{ return keyword(Parser.VOID);			}
