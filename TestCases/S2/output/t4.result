@@ -1,1 +1,15 @@
-*** Error at (16,16): syntax error
+Exception in thread "main" java.lang.NullPointerException
+	at decaf.typecheck.TypeCheck.visitIndexed(TypeCheck.java:118)
+	at decaf.tree.Tree$Indexed.accept(Tree.java:1196)
+	at decaf.typecheck.TypeCheck.visitPrint(TypeCheck.java:404)
+	at decaf.tree.Tree$Print.accept(Tree.java:728)
+	at decaf.typecheck.TypeCheck.visitBlock(TypeCheck.java:350)
+	at decaf.tree.Tree$Block.accept(Tree.java:506)
+	at decaf.typecheck.TypeCheck.visitMethodDef(TypeCheck.java:333)
+	at decaf.tree.Tree$MethodDef.accept(Tree.java:426)
+	at decaf.typecheck.TypeCheck.visitClassDef(TypeCheck.java:324)
+	at decaf.tree.Tree$ClassDef.accept(Tree.java:391)
+	at decaf.typecheck.TypeCheck.visitTopLevel(TypeCheck.java:341)
+	at decaf.typecheck.TypeCheck.checkType(TypeCheck.java:53)
+	at decaf.Driver.compile(Driver.java:93)
+	at decaf.Driver.main(Driver.java:107)
