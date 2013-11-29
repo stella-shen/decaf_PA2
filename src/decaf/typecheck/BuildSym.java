@@ -164,6 +164,9 @@ public class BuildSym extends Tree.Visitor {
 		case Tree.INT:
 			type.type = BaseType.INT;
 			break;
+		case Tree.DOUBLE:
+			type.type = BaseType.DOUBLE;
+			break;
 		case Tree.BOOL:
 			type.type = BaseType.BOOL;
 			break;
@@ -230,6 +233,13 @@ public class BuildSym extends Tree.Visitor {
 	public void visitWhileLoop(Tree.WhileLoop whileLoop) {
 		if (whileLoop.loopBody != null) {
 			whileLoop.loopBody.accept(this);
+		}
+	}
+	
+	@Override
+	public void visitRepeatLoop(Tree.RepeatLoop repeatLoop) {
+		if(repeatLoop.loopBody != null) {
+			repeatLoop.loopBody.accept(this);
 		}
 	}
 

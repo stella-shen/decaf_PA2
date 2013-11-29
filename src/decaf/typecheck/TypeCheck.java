@@ -5,9 +5,14 @@ import java.util.Stack;
 import decaf.Driver;
 import decaf.Location;
 import decaf.tree.Tree;
+import decaf.tree.Tree.ThisExpr;
+import decaf.error.BadArgCountError;
+import decaf.error.BadArrElementError;
 import decaf.error.BadLengthArgError;
 import decaf.error.BadLengthError;
+import decaf.error.BadNewArrayLength;
 import decaf.error.BadPrintArgError;
+import decaf.error.BadReturnTypeError;
 import decaf.error.BadTestExpr;
 import decaf.error.BreakOutOfLoopError;
 import decaf.error.ClassNotFoundError;
@@ -149,8 +154,8 @@ public class TypeCheck extends Tree.Visitor {
 				issueError(new RefNonStaticError(callExpr.getLocation(),
 						currentFunction.getName(), func.getName()));
 			}
-			// TODO: Add code here.
-			//
+			// TODO Add code here.
+			
 		}
 	}
 
@@ -202,7 +207,22 @@ public class TypeCheck extends Tree.Visitor {
 	
 	@Override
 	public void visitNewArray(Tree.NewArray newArrayExpr) {
-		// TODO
+		// 
+		newArrayExpr.elementType.accept(this);
+		if (newArrayExpr.elementType.type.equal(BaseType.ERROR)) {
+			newArrayExpr.type = BaseType.ERROR;
+		} else if (newArrayExpr.elementType.type.equal(BaseType.VOID)) {
+			issueError(new BadArrElementError(newArrayExpr.getLocation()));
+			newArrayExpr.type = BaseType.ERROR;
+		} else {
+			newArrayExpr.type = new decaf.type.ArrayType(
+					newArrayExpr.elementType.type);
+		}
+		
+		newArrayExpr.length.accept(this);
+		if(newArrayExpr.length.type != BaseType.INT) {
+			issueError(new BadNewArrayLength(newArrayExpr.length.getLocation()));
+		}
 	}
 
 	@Override
@@ -273,7 +293,23 @@ public class TypeCheck extends Tree.Visitor {
 				ident.type = BaseType.ERROR;
 			} else if (v.isVariable()) {
 				// TODO: Add code here
-				//
+				Variable var = (Variable) v;
+				ident.symbol = var;
+				ident.type = var.getType();
+				if(var.isLocalVar()) {
+					ident.lvKind = Tree.LValue.Kind.LOCAL_VAR;
+				} else if(var.isParam()) {
+					ident.lvKind = Tree.LValue.Kind.PARAM_VAR;
+				} else {
+					if(currentFunction.isStatik()) {
+						issueError(new RefNonStaticError(ident.loc
+								, currentFunction.getName()
+								, ident.name));
+					} else {
+						ident.owner = new Tree.ThisExpr(ident.loc);
+					}
+					ident.lvKind = Tree.LValue.Kind.MEMBER_VAR;
+				}
 			} else {
 				// TODO: Add code here
 				//
@@ -420,6 +456,24 @@ public class TypeCheck extends Tree.Visitor {
 			returnStmt.expr.accept(this);
 		}
 		// TODO: 检查返回值类型
+		if(returnType == BaseType.VOID) {
+			if(returnStmt.expr != null) {
+				returnStmt.type = BaseType.ERROR;
+				issueError(new BadReturnTypeError(returnStmt.loc
+						, returnType.toString()
+						, returnStmt.expr.type.toString()));
+			} else {
+				returnStmt.type = BaseType.VOID;
+			}
+		} else if(returnStmt.expr == null) {
+			returnStmt.type = BaseType.ERROR;
+			issueError(new BadReturnTypeError(returnStmt.loc
+					, returnType.toString()
+					, returnStmt.expr.type.toString()));
+		} else if(returnStmt.expr.type != BaseType.ERROR
+				&& !returnStmt.expr.type.compatible(returnType)) {
+			
+		}
 	}
 
 	@Override
@@ -441,6 +495,9 @@ public class TypeCheck extends Tree.Visitor {
 			break;
 		case Tree.INT:
 			type.type = BaseType.INT;
+			break;
+		case Tree.DOUBLE:
+			type.type = BaseType.DOUBLE;
 			break;
 		case Tree.BOOL:
 			type.type = BaseType.BOOL;
@@ -464,7 +521,16 @@ public class TypeCheck extends Tree.Visitor {
 
 	@Override
 	public void visitTypeArray(Tree.TypeArray typeArray) {
-		// TODO
+		typeArray.elementType.accept(this);
+		Type type = typeArray.elementType.type;
+		if(type == BaseType.ERROR) {
+			typeArray.type = BaseType.ERROR;
+		} else if(type == BaseType.VOID) {
+			typeArray.type = BaseType.ERROR;
+			issueError(new BadArrElementError(typeArray.loc));
+		} else {
+			typeArray.type = type;
+		}
 	}
 
 	private void issueError(DecafError error) {
