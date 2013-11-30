@@ -7,6 +7,7 @@ import decaf.Location;
 import decaf.tree.Tree;
 import decaf.tree.Tree.ThisExpr;
 import decaf.error.BadArgCountError;
+import decaf.error.BadArgTypeError;
 import decaf.error.BadArrElementError;
 import decaf.error.BadLengthArgError;
 import decaf.error.BadLengthError;
@@ -155,7 +156,55 @@ public class TypeCheck extends Tree.Visitor {
 						currentFunction.getName(), func.getName()));
 			}
 			// TODO Add code here.
+			if(callExpr.receiver != null && !func.isStatik() && callExpr.receiver.isClass) {
+				issueError(new NotClassFieldError(callExpr.loc
+						, callExpr.method
+						, callExpr.receiver.type.toString()));
+			}
 			
+			if(func.isStatik()) {
+				callExpr.receiver = null;
+			} else if(callExpr.receiver == null && !currentFunction.isStatik()) {
+				callExpr.receiver = new Tree.ThisExpr(callExpr.getLocation());
+				callExpr.receiver.accept(this);
+			}
+			for(int i = 0; i < callExpr.actuals.size(); i++) {
+				callExpr.actuals.get(i).accept(this);
+			}
+			
+			if(func.isStatik()) {
+				if(callExpr.actuals.size() != func.getType().getArgList().size()) {
+					issueError(new BadArgCountError(callExpr.getLocation()
+							, callExpr.method
+							, func.getType().getArgList().size()
+							, callExpr.actuals.size()));
+				}
+				for(int i = 0; i < callExpr.actuals.size(); i++) {
+					if(!callExpr.actuals.get(i).type.compatible(func.getType().getArgList().get(i))
+							&& callExpr.actuals.get(i).type != BaseType.ERROR) {
+						issueError(new BadArgTypeError(callExpr.actuals.get(i).loc
+								, i + 1
+								, callExpr.actuals.get(i).type.toString()
+								, func.getType().getArgList().get(i).toString()));
+					}
+				}
+			} else if(!func.isStatik()) {
+				if(callExpr.actuals.size() != func.getType().getArgList().size() - 1) {
+					issueError(new BadArgCountError(callExpr.getLocation()
+							, callExpr.method
+							, func.getType().getArgList().size() - 1
+							, callExpr.actuals.size()));
+				}
+				for(int i = 0; i < callExpr.actuals.size(); i++) {
+					if(!callExpr.actuals.get(i).type.compatible(func.getType().getArgList().get(i + 1))
+							&& callExpr.actuals.get(i).type != BaseType.ERROR) {
+						issueError(new BadArgTypeError(callExpr.actuals.get(i).loc
+								, i + 1
+								, callExpr.actuals.get(i).toString()
+								, func.getType().getArgList().get(i + 1).toString()));
+					}
+				}
+			}
 		}
 	}
 
