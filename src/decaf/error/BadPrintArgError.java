@@ -22,7 +22,7 @@ public class BadPrintArgError extends DecafError {
 	@Override
 	protected String getErrMsg() {
 		return "incompatible argument " + count + ": " + type
-				+ " given, int/bool/string expected";
+				+ " given, int/bool/string/double expected";
 	}
 
 }

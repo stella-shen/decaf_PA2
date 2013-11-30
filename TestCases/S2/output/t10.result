@@ -1,17 +1,19 @@
-Exception in thread "main" java.lang.NullPointerException
-	at decaf.typecheck.TypeCheck.checkBinaryOp(TypeCheck.java:586)
-	at decaf.typecheck.TypeCheck.visitBinary(TypeCheck.java:63)
-	at decaf.tree.Tree$Binary.accept(Tree.java:978)
-	at decaf.typecheck.TypeCheck.checkTestExpr(TypeCheck.java:661)
-	at decaf.typecheck.TypeCheck.visitIf(TypeCheck.java:464)
-	at decaf.tree.Tree$If.accept(Tree.java:649)
-	at decaf.typecheck.TypeCheck.visitBlock(TypeCheck.java:406)
-	at decaf.tree.Tree$Block.accept(Tree.java:506)
-	at decaf.typecheck.TypeCheck.visitMethodDef(TypeCheck.java:389)
-	at decaf.tree.Tree$MethodDef.accept(Tree.java:426)
-	at decaf.typecheck.TypeCheck.visitClassDef(TypeCheck.java:380)
-	at decaf.tree.Tree$ClassDef.accept(Tree.java:391)
-	at decaf.typecheck.TypeCheck.visitTopLevel(TypeCheck.java:397)
-	at decaf.typecheck.TypeCheck.checkType(TypeCheck.java:58)
-	at decaf.Driver.compile(Driver.java:93)
-	at decaf.Driver.main(Driver.java:107)
+GLOBAL SCOPE:
+    (1,1) -> class Math
+    (22,1) -> class Main
+    CLASS SCOPE OF 'Math':
+        (2,19) -> static function abs : double->double
+        (10,16) -> static function pow : int->int->int
+        FORMAL SCOPE OF 'abs':
+            (2,30) -> variable @a : double
+            LOCAL SCOPE:
+        FORMAL SCOPE OF 'pow':
+            (10,24) -> variable @a : int
+            (10,31) -> variable @b : int
+            LOCAL SCOPE:
+                (11,13) -> variable i : int
+                (12,13) -> variable result : int
+    CLASS SCOPE OF 'Main':
+        (23,17) -> static function main : void
+        FORMAL SCOPE OF 'main':
+            LOCAL SCOPE:

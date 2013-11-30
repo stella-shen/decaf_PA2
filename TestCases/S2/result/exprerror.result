@@ -11,8 +11,8 @@
 *** Error at (17,13): incompatible operand: ! int
 *** Error at (18,15): incompatible operands: bool && int
 *** Error at (19,18): undeclared variable 'c'
-*** Error at (20,9): undeclared variable 'Main'
-*** Error at (21,13): undeclared variable 'Main'
+*** Error at (20,14): incompatible operands: class : Main = int
+*** Error at (21,18): incompatible operands: class : Main + int
 *** Error at (22,15): incompatible operands: int > bool
 *** Error at (23,15): incompatible operands: int >= bool
 *** Error at (24,15): incompatible operands: int < bool
