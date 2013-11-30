@@ -1,15 +1,5 @@
-Exception in thread "main" java.lang.NullPointerException
-	at decaf.typecheck.TypeCheck.visitIdent(TypeCheck.java:321)
-	at decaf.tree.Tree$Ident.accept(Tree.java:1227)
-	at decaf.typecheck.TypeCheck.visitAssign(TypeCheck.java:395)
-	at decaf.tree.Tree$Assign.accept(Tree.java:904)
-	at decaf.typecheck.TypeCheck.visitBlock(TypeCheck.java:387)
-	at decaf.tree.Tree$Block.accept(Tree.java:506)
-	at decaf.typecheck.TypeCheck.visitMethodDef(TypeCheck.java:370)
-	at decaf.tree.Tree$MethodDef.accept(Tree.java:426)
-	at decaf.typecheck.TypeCheck.visitClassDef(TypeCheck.java:361)
-	at decaf.tree.Tree$ClassDef.accept(Tree.java:391)
-	at decaf.typecheck.TypeCheck.visitTopLevel(TypeCheck.java:378)
-	at decaf.typecheck.TypeCheck.checkType(TypeCheck.java:58)
-	at decaf.Driver.compile(Driver.java:93)
-	at decaf.Driver.main(Driver.java:107)
+*** Error at (5,9): can not reference a non-static field 'a' from static method 'main'
+*** Error at (6,9): can not use this in static function
+*** Error at (7,14): cannot access field 'a' from 'class : Main'
+*** Error at (8,9): can not reference a non-static field 'func' from static method 'main'
+*** Error at (12,20): field 'b' of 'class : Test' not accessible here

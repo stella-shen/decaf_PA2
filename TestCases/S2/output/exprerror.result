@@ -1,16 +1,20 @@
-Exception in thread "main" java.lang.NullPointerException
-	at decaf.typecheck.TypeCheck.checkBinaryOp(TypeCheck.java:567)
-	at decaf.typecheck.TypeCheck.visitBinary(TypeCheck.java:63)
-	at decaf.tree.Tree$Binary.accept(Tree.java:978)
-	at decaf.typecheck.TypeCheck.visitAssign(TypeCheck.java:396)
-	at decaf.tree.Tree$Assign.accept(Tree.java:904)
-	at decaf.typecheck.TypeCheck.visitBlock(TypeCheck.java:387)
-	at decaf.tree.Tree$Block.accept(Tree.java:506)
-	at decaf.typecheck.TypeCheck.visitMethodDef(TypeCheck.java:370)
-	at decaf.tree.Tree$MethodDef.accept(Tree.java:426)
-	at decaf.typecheck.TypeCheck.visitClassDef(TypeCheck.java:361)
-	at decaf.tree.Tree$ClassDef.accept(Tree.java:391)
-	at decaf.typecheck.TypeCheck.visitTopLevel(TypeCheck.java:378)
-	at decaf.typecheck.TypeCheck.checkType(TypeCheck.java:58)
-	at decaf.Driver.compile(Driver.java:93)
-	at decaf.Driver.main(Driver.java:107)
+*** Error at (9,9): undeclared variable 'c'
+*** Error at (12,15): incompatible operands: int + string
+*** Error at (13,15): incompatible operands: int - bool
+*** Error at (14,9): undeclared variable 'c'
+*** Error at (14,13): undeclared variable 'c'
+*** Error at (15,15): incompatible operands: bool / bool
+*** Error at (16,15): incompatible operands: int % bool
+*** Error at (17,13): incompatible operand: ! int
+*** Error at (18,15): incompatible operands: bool && int
+*** Error at (19,18): undeclared variable 'c'
+*** Error at (20,9): undeclared variable 'Main'
+*** Error at (21,13): undeclared variable 'Main'
+*** Error at (22,15): incompatible operands: int > bool
+*** Error at (23,15): incompatible operands: int >= bool
+*** Error at (24,15): incompatible operands: int < bool
+*** Error at (25,15): incompatible operands: bool <= bool
+*** Error at (26,15): incompatible operands: int != bool
+*** Error at (27,15): incompatible operands: int == bool
+*** Error at (28,16): test expression must have bool type
+*** Error at (29,15): test expression must have bool type

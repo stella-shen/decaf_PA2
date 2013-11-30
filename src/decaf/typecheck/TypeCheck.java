@@ -293,7 +293,7 @@ public class TypeCheck extends Tree.Visitor {
 				issueError(new UndeclVarError(ident.getLocation(), ident.name));
 				ident.type = BaseType.ERROR;
 			} else if (v.isVariable()) {
-				// TODO: Add code here
+				//Add code here
 				Variable var = (Variable) v;
 				ident.symbol = var;
 				ident.type = var.getType();
@@ -312,8 +312,27 @@ public class TypeCheck extends Tree.Visitor {
 					ident.lvKind = Tree.LValue.Kind.MEMBER_VAR;
 				}
 			} else {
-				// TODO: Add code here
-				//
+				//Add code here
+				if(v.isFunction()) {
+					Function f = (Function) v;
+					if(ident.usedForRef) {
+						ident.type = f.getType();
+					} else {
+						ident.type = BaseType.ERROR;
+						issueError(new UndeclVarError(ident.loc
+								, ident.name));
+					}
+				} else if(v.isClass()) {
+					Class c = (Class) v;
+					if(ident.usedForRef) {
+						ident.isClass = true;
+						ident.type = c.getType();
+					} else {
+						ident.type = BaseType.ERROR;
+						issueError(new UndeclVarError(ident.loc
+								, ident.name));
+					}
+				}
 			}
 		} else {
 			ident.owner.usedForRef = true;
@@ -407,7 +426,7 @@ public class TypeCheck extends Tree.Visitor {
 
 	@Override
 	public void visitBreak(Tree.Break breakStmt) {
-		if (true/* TODO: REPLACE THIS WITH A CORRECT CONDITION */) {
+		if (breaks.empty()) {
 			issueError(new BreakOutOfLoopError(breakStmt.getLocation()));
 		}
 	}
