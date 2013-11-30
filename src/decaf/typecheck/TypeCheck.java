@@ -391,7 +391,7 @@ public class TypeCheck extends Tree.Visitor {
 
 	@Override
 	public void visitAssign(Tree.Assign assign) {
-		// TODO: Add code here.
+		// Add code here.
 		assign.left.accept(this);
 		assign.expr.accept(this);
 		
@@ -593,13 +593,40 @@ public class TypeCheck extends Tree.Visitor {
 		case Tree.GE:
 		case Tree.LT:
 		case Tree.LE:
+			if(left.type != BaseType.INT || right.type != BaseType.INT) {
+				compatible = false;
+			} else {
+				compatible = true;
+			}
+			returnType = BaseType.BOOL;
+			break;
 		case Tree.MOD:
+			if(left.type != BaseType.INT || right.type != BaseType.INT) {
+				compatible = false;
+			} else {
+				compatible = true;
+			}
+			returnType = BaseType.INT;
+			break;
 		case Tree.EQ:
 		case Tree.NE:
+			if(!(left.type.compatible(right.type)) || !(right.type.compatible(left.type))) {
+				compatible = false;
+			} else {
+				compatible = true;
+			}
+			returnType = BaseType.BOOL;
+			break;
 		case Tree.AND:
 		case Tree.OR:
+			if(left.type != BaseType.BOOL || right.type != BaseType.BOOL) {
+				compatible = false;
+			} else {
+				compatible = true;
+			}
+			returnType = BaseType.BOOL;
 			break;
-		// TODO: 为上面每个case添加代码
+		// 为上面每个case添加代码
 		default:
 			break;
 		}
