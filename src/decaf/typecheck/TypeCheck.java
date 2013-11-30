@@ -207,7 +207,7 @@ public class TypeCheck extends Tree.Visitor {
 	
 	@Override
 	public void visitNewArray(Tree.NewArray newArrayExpr) {
-		// 
+		
 		newArrayExpr.elementType.accept(this);
 		if (newArrayExpr.elementType.type.equal(BaseType.ERROR)) {
 			newArrayExpr.type = BaseType.ERROR;
@@ -221,6 +221,7 @@ public class TypeCheck extends Tree.Visitor {
 		
 		newArrayExpr.length.accept(this);
 		if(newArrayExpr.length.type != BaseType.INT) {
+			newArrayExpr.length.type = BaseType.ERROR;
 			issueError(new BadNewArrayLength(newArrayExpr.length.getLocation()));
 		}
 	}
@@ -391,6 +392,17 @@ public class TypeCheck extends Tree.Visitor {
 	@Override
 	public void visitAssign(Tree.Assign assign) {
 		// TODO: Add code here.
+		assign.left.accept(this);
+		assign.expr.accept(this);
+		
+		if(assign.left.type == BaseType.ERROR 
+				&&(!assign.left.type.compatible(assign.left.type)
+				|| assign.left.type.isFuncType())) {
+			issueError(new IncompatBinOpError(assign.loc
+					, assign.left.toString()
+					, "="
+					, assign.expr.toString()));
+		}
 	}
 
 	@Override
@@ -418,8 +430,14 @@ public class TypeCheck extends Tree.Visitor {
 
 	@Override
 	public void visitRepeatLoop(Tree.RepeatLoop repeatLoop) {
-		// TODO
+		//
 		// repeat循环。参考visitWhileLoop，自行修改Tree，
+		checkTestExpr(repeatLoop.condition);
+		breaks.add(repeatLoop);
+		if (repeatLoop.loopBody != null) {
+			repeatLoop.loopBody.accept(this);
+		}
+		breaks.pop();
 	}
 
 	@Override
@@ -455,7 +473,7 @@ public class TypeCheck extends Tree.Visitor {
 		if (returnStmt.expr != null) {
 			returnStmt.expr.accept(this);
 		}
-		// TODO: 检查返回值类型
+		//检查返回值类型
 		if(returnType == BaseType.VOID) {
 			if(returnStmt.expr != null) {
 				returnStmt.type = BaseType.ERROR;
@@ -472,7 +490,12 @@ public class TypeCheck extends Tree.Visitor {
 					, returnStmt.expr.type.toString()));
 		} else if(returnStmt.expr.type != BaseType.ERROR
 				&& !returnStmt.expr.type.compatible(returnType)) {
-			
+			returnStmt.type = BaseType.ERROR;
+			issueError(new BadReturnTypeError(returnStmt.loc
+					, returnType.toString()
+					, returnStmt.expr.type.toString()));
+		} else {
+			returnStmt.type = returnType;
 		}
 	}
 

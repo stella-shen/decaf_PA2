@@ -1,15 +1,5 @@
-Exception in thread "main" java.lang.NullPointerException
-	at decaf.typecheck.TypeCheck.visitCallExpr(TypeCheck.java:166)
-	at decaf.tree.Tree$CallExpr.accept(Tree.java:1049)
-	at decaf.typecheck.TypeCheck.visitExec(TypeCheck.java:200)
-	at decaf.tree.Tree$Exec.accept(Tree.java:685)
-	at decaf.typecheck.TypeCheck.visitBlock(TypeCheck.java:350)
-	at decaf.tree.Tree$Block.accept(Tree.java:506)
-	at decaf.typecheck.TypeCheck.visitMethodDef(TypeCheck.java:333)
-	at decaf.tree.Tree$MethodDef.accept(Tree.java:426)
-	at decaf.typecheck.TypeCheck.visitClassDef(TypeCheck.java:324)
-	at decaf.tree.Tree$ClassDef.accept(Tree.java:391)
-	at decaf.typecheck.TypeCheck.visitTopLevel(TypeCheck.java:341)
-	at decaf.typecheck.TypeCheck.checkType(TypeCheck.java:53)
-	at decaf.Driver.compile(Driver.java:93)
-	at decaf.Driver.main(Driver.java:107)
+*** Error at (45,33): incompatible operands: class : QueueItem == class : QueueItem
+*** Error at (65,23): incompatible operands: int < int
+*** Error at (68,23): incompatible operands: int < int
+*** Error at (72,23): incompatible operands: int < int
+*** Error at (74,23): incompatible operands: int < int

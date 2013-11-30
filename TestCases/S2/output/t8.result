@@ -1,15 +1,40 @@
-Exception in thread "main" java.lang.NullPointerException
-	at decaf.typecheck.TypeCheck.visitCallExpr(TypeCheck.java:166)
-	at decaf.tree.Tree$CallExpr.accept(Tree.java:1049)
-	at decaf.typecheck.TypeCheck.visitExec(TypeCheck.java:200)
-	at decaf.tree.Tree$Exec.accept(Tree.java:685)
-	at decaf.typecheck.TypeCheck.visitBlock(TypeCheck.java:350)
-	at decaf.tree.Tree$Block.accept(Tree.java:506)
-	at decaf.typecheck.TypeCheck.visitMethodDef(TypeCheck.java:333)
-	at decaf.tree.Tree$MethodDef.accept(Tree.java:426)
-	at decaf.typecheck.TypeCheck.visitClassDef(TypeCheck.java:324)
-	at decaf.tree.Tree$ClassDef.accept(Tree.java:391)
-	at decaf.typecheck.TypeCheck.visitTopLevel(TypeCheck.java:341)
-	at decaf.typecheck.TypeCheck.checkType(TypeCheck.java:53)
-	at decaf.Driver.compile(Driver.java:93)
-	at decaf.Driver.main(Driver.java:107)
+GLOBAL SCOPE:
+    (5,1) -> class Animal
+    (22,1) -> class Cow : Animal
+    (33,1) -> class Main
+    CLASS SCOPE OF 'Animal':
+        (6,9) -> variable height : int
+        (7,18) -> variable mother : class : Animal
+        (8,10) -> function InitAnimal : class : Animal->int->class : Animal->void
+        (13,9) -> function GetHeight : class : Animal->int
+        (17,18) -> function GetMom : class : Animal->class : Animal
+        FORMAL SCOPE OF 'InitAnimal':
+            (8,10) -> variable @this : class : Animal
+            (8,25) -> variable @h : int
+            (8,41) -> variable @mom : class : Animal
+            LOCAL SCOPE:
+        FORMAL SCOPE OF 'GetHeight':
+            (13,9) -> variable @this : class : Animal
+            LOCAL SCOPE:
+        FORMAL SCOPE OF 'GetMom':
+            (17,18) -> variable @this : class : Animal
+            LOCAL SCOPE:
+    CLASS SCOPE OF 'Cow':
+        (23,10) -> variable isSpotted : bool
+        (24,10) -> function InitCow : class : Cow->int->class : Animal->bool->void
+        (28,10) -> function IsSpottedCow : class : Cow->bool
+        FORMAL SCOPE OF 'InitCow':
+            (24,10) -> variable @this : class : Cow
+            (24,22) -> variable @h : int
+            (24,38) -> variable @m : class : Animal
+            (24,46) -> variable @spot : bool
+            LOCAL SCOPE:
+        FORMAL SCOPE OF 'IsSpottedCow':
+            (28,10) -> variable @this : class : Cow
+            LOCAL SCOPE:
+    CLASS SCOPE OF 'Main':
+        (34,17) -> static function main : void
+        FORMAL SCOPE OF 'main':
+            LOCAL SCOPE:
+                (35,19) -> variable betsy : class : Cow
+                (36,22) -> variable b : class : Animal
